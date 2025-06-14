@@ -16,6 +16,7 @@ public class WebCrawler implements Crawler<SiteInfo> {
     private final Logger logger = Logger.getLogger(WebCrawler.class.getName());
 
 
+    @Override
     public HashMap<String, SiteInfo> crawl(final String startUrl, final String rootUrl) throws IOException {
 
         return traverseSite(startUrl, rootUrl);

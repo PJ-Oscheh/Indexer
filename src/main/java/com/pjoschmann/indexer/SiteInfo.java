@@ -3,12 +3,11 @@ package com.pjoschmann.indexer;
 import java.util.ArrayList;
 
 public class SiteInfo {
-    // public record SiteInfo (String url, Integer referenceCount, String title, ArrayList<String> headings) {}
 
-    final String url;
-    int referenceCount = 0;
-    String title;
-    final ArrayList<String> headings = new ArrayList<>();
+    private final String url;
+    private int referenceCount = 0;
+    private String title;
+    private final ArrayList<String> headings = new ArrayList<>();
 
     public SiteInfo(String url, String title) {
         this.url = url;
