@@ -10,13 +10,13 @@ import org.bson.types.ObjectId;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-public class MongoController implements NoSqlDbController<SiteInfo> {
+public class MongoDbController implements NoSqlDbController<SiteInfo> {
 
     private final String connectionString;
     private final String databaseName;
-    private final Logger logger = Logger.getLogger(MongoController.class.getName());
+    private final Logger logger = Logger.getLogger(MongoDbController.class.getName());
 
-    public MongoController(String connectionString, String databaseName) {
+    public MongoDbController(String connectionString, String databaseName) {
         this.connectionString = connectionString;
         this.databaseName = databaseName;
     }
@@ -76,9 +76,9 @@ public class MongoController implements NoSqlDbController<SiteInfo> {
     private boolean checkCollectionExists(MongoDatabase database, String collectionName) {
         for (String collection : database.listCollectionNames()) {
             if (collectionName.equals(collection)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }
