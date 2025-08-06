@@ -38,9 +38,9 @@ public class WebCrawler implements Crawler<SiteInfo> {
     private HashMap<String, SiteInfo> traverseSite(final String startUrl, final String rootUrl) throws IOException {
 
         // Initialize with first node
-        // Note that the string in the node queue is used as the keu in the site map
-        ArrayList<String> nodeQueue = new ArrayList<>();
-        HashMap<String, SiteInfo> siteMap = new HashMap<>();
+        // The node queue stores URL Strings. The site map uses these URL Strings as keys.
+        ArrayList<String> nodeQueue = new ArrayList<>(); // Used for site traversal
+        HashMap<String, SiteInfo> siteMap = new HashMap<>(); // Used for saving site data
 
         siteMap.put(startUrl, new SiteInfo(startUrl, ""));
         nodeQueue.add(startUrl);
@@ -50,15 +50,20 @@ public class WebCrawler implements Crawler<SiteInfo> {
             // Get site content for element at start of queue
             SiteContent siteContent = getSiteContent(nodeQueue.getFirst(), rootUrl);
 
-            // Save site content
+            // Save site content to first node in queue (representative of the current site)
             siteMap.get(nodeQueue.getFirst()).setTitle(siteContent.title);
             siteMap.get(nodeQueue.getFirst()).addHeadings(siteContent.headings);
 
-            for (String link : siteContent.links()) {
+            // Add newly found links to the site map and node queue
+            for (String link : siteContent.links) {
+
+                // If the link isn't already in the site map, add it, and add to queue for later traversal
                 if (!siteMap.containsKey(link)) {
                     siteMap.put(link, new SiteInfo(link, ""));
                     nodeQueue.add(link);
                 }
+
+                // Otherwise, increment that link's reference count
                 else {
                     siteMap.get(link).setReferenceCount(siteMap.get(link).getReferenceCount()+1);
                 }
