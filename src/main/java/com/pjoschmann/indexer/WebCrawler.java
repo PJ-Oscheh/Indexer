@@ -38,6 +38,7 @@ public class WebCrawler implements Crawler<SiteInfo> {
     private HashMap<String, SiteInfo> traverseSite(final String startUrl, final String rootUrl) throws IOException {
 
         // Initialize with first node
+        // Note that the string in the node queue is used as the keu in the site map
         ArrayList<String> nodeQueue = new ArrayList<>();
         HashMap<String, SiteInfo> siteMap = new HashMap<>();
 
