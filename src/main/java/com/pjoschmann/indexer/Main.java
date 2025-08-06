@@ -14,6 +14,16 @@ public class Main {
         doIndexing(url);
     }
 
+    /**
+     * <p>Indexes a webpage for the provided URL.</p>
+     * <p></p>
+     * This method will use a WebCrawler to traverse a page starting at
+     * the provided URL. Once that's complete, it'll save each discovered page's title,
+     * heading, and reference count (that is, the amount of times other pages linked to that page)
+     * to a MongoDB database.
+     * </p>
+     * @param url URL from which to begin crawling
+     */
     private static void doIndexing(final String url) {
         WebCrawler wc = new WebCrawler();
 
