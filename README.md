@@ -35,7 +35,7 @@ This program has two dependencies: JSoup and the MongoDB Java Driver.
 
 **Version: 1.20.1**
 
-[JSoup](https://jsoup.org/) is a wonderful library that assists in parsing HTML content. It's primary use case in this program
+[JSoup](https://jsoup.org/) is a wonderful library that assists in parsing HTML content. Its primary use case in this program
 is to ease the process of iterating through HTML elements and to pick out links and headers. It also provides an implementation
 for connecting to a URL and downloading its contents with a supplied user agent.
 
