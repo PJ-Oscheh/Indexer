@@ -11,10 +11,10 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String url = scanner.nextLine();
 
-        doSampleIndexing(url);
+        doIndexing(url);
     }
 
-    private static void doSampleIndexing(final String url) {
+    private static void doIndexing(final String url) {
         WebCrawler wc = new WebCrawler();
 
         // Crawl site and find links
