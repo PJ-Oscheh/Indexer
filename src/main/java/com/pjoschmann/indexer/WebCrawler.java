@@ -65,7 +65,7 @@ public class WebCrawler implements Crawler<SiteInfo> {
 
             nodeQueue.removeFirst();
 
-            // Sleep for 1 second before continuing to avoid DoSing the site
+            // Sleep for 1 second before continuing to avoid DoS-ing the site
             try {
                 Thread.sleep(1000);
             }
