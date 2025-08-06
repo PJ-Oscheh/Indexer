@@ -6,6 +6,7 @@ import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.nodes.*;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -55,7 +56,6 @@ public class WebCrawler implements Crawler<SiteInfo> {
             for (String link : siteContent.links()) {
                 if (!siteMap.containsKey(link)) {
                     siteMap.put(link, new SiteInfo(link, ""));
-                    System.out.println("Queueing link: '" + link + "'");
                     nodeQueue.add(link);
                 }
                 else {
@@ -96,21 +96,42 @@ public class WebCrawler implements Crawler<SiteInfo> {
      * @throws IOException If an unexpected exception occurs, pass it along!
      */
     private SiteContent getSiteContent(final String url, final String rootUrl) throws IOException {
-        Document doc;
+
+        System.out.println("Attempting to get site content for: '" + url + "'.");
+
+        Document doc = null;
         final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
                 "Chrome/136.0.7103.48 Safari/537.36";
         String title = "";
         ArrayList<String> headings = new ArrayList<>();
         ArrayList<String> links = new ArrayList<>();
 
+        for (int i=0; i<5; i++) {
+            try {
+                doc = Jsoup.connect(url).userAgent(userAgent).get();
+                break;
+            }
+            catch (HttpStatusException | UnsupportedMimeTypeException e) {
+                System.out.println("Can't connect to '" + url + "' due to " + e.getMessage());
+                return new SiteContent(title, headings, links); // Blank!
+            }
+            catch (SocketTimeoutException e) {
+                System.out.println("Failed to connect to '" + url + "' due to timeout - Trying again...");
+                // Wait a little bit if we get a timeout
+                try {
+                    Thread.sleep(3000);
+                }
+                catch (InterruptedException f) {
+                    return new SiteContent(title, headings, links);
+                }
+            }
+        }
 
-        try {
-            doc = Jsoup.connect(url).userAgent(userAgent).get();
+        if (doc == null) {
+            System.out.println("Failed to connect to '" + url + "'. Skipping...");
+            return new SiteContent(title, headings, links);
         }
-        catch (HttpStatusException | UnsupportedMimeTypeException e) {
-            System.out.println("Can't connect to '" + url + "' due to " + e.getMessage());
-            return new SiteContent(title, headings, links); // Blank!
-        }
+
 
         // Get title
         title = doc.title();

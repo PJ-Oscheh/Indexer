@@ -6,13 +6,13 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
 
-        indexEvilBatteryScamWebsite();
+        doSampleIndexing();
     }
 
-    private static void indexEvilBatteryScamWebsite() {
+    private static void doSampleIndexing() {
         WebCrawler wc = new WebCrawler();
 
-        final String url = "https://ezbatteryreconditioning.com";
+        final String url = "https://misnymerch.com/";
 
         // Crawl site and find links
         HashMap<String, SiteInfo> siteMap;
@@ -28,11 +28,14 @@ public class Main {
         MongoDbController controller = new MongoDbController("mongodb://localhost:27017/",
                 "Indexer");
 
+        System.out.println("Creating collection for '" + url + "'.");
         // Create the collection
         controller.createCollection(url);
 
+        System.out.println("Saving traversed site to the database...");
         // Save sites to that collection
         controller.saveToDb(siteMap, url);
 
+        System.out.println("Done!");
     }
 }
