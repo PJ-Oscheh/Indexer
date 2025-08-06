@@ -2,17 +2,20 @@ package com.pjoschmann.indexer;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-        doSampleIndexing();
+        System.out.print("Enter a URL to scrape: ");
+        Scanner scanner = new Scanner(System.in);
+        String url = scanner.nextLine();
+
+        doSampleIndexing(url);
     }
 
-    private static void doSampleIndexing() {
+    private static void doSampleIndexing(final String url) {
         WebCrawler wc = new WebCrawler();
-
-        final String url = "https://misnymerch.com/";
 
         // Crawl site and find links
         HashMap<String, SiteInfo> siteMap;
