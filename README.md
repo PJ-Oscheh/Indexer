@@ -26,4 +26,4 @@ called `Indexer` has already been configured at address `mongodb://localhost:270
 
 The data will be saved to a collection with a title of the provided start URL. The collection will contain objects representative
 of the pages traversed. In addition to links, the pages' headings and title are saved. A reference count is also provided,
-indicating how many times the page was linked to during the scan.
+indicating how many times the page was linked to during the traversal.
