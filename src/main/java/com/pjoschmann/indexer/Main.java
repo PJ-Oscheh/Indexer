@@ -40,7 +40,7 @@ public class Main {
         WebCrawler wc = new WebCrawler();
 
         // Crawl site and find links
-        HashMap<String, SiteInfo> siteMap = new HashMap<>();
+        HashMap<String, SiteInfo> siteMap;
 
         try {
             siteMap = wc.crawl(url, url);
