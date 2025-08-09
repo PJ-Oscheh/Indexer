@@ -27,6 +27,11 @@ public class Main {
     @GetMapping("/indexSite")
     ResponseEntity<Map<String,SiteInfo>> indexSite(@RequestBody final String rawJson) {
 
+        // Create controller to work with database
+        MongoDbController controller = new MongoDbController("mongodb://localhost:27017/",
+                "Indexer");
+
+
         JsonParser jsonParser = JsonParserFactory.getJsonParser();
         Map<String,Object> parsedJson = jsonParser.parseMap(rawJson);
 
@@ -45,16 +50,23 @@ public class Main {
             return ResponseEntity.internalServerError().build();
         }
 
+
+
+        System.out.println("Creating collection for '" + url + "'.");
+        // Create the collection
+        controller.createCollection(url);
+
+        System.out.println("Saving traversed site to the database...");
+        // Save sites to that collection
+        controller.saveToDb(siteMap, url);
+
+        System.out.println("Done!");
+
         return ResponseEntity.ok(siteMap);
     }
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-//        System.out.print("Enter a URL to scrape: ");
-//        Scanner scanner = new Scanner(System.in);
-//        String url = scanner.nextLine();
-//
-//        doIndexing(url);
     }
 
     /**
