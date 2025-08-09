@@ -1,17 +1,22 @@
 package com.pjoschmann.indexer;
 
+import org.springframework.boot.SpringApplication;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
+
+
+
     public static void main(String[] args) {
-
-        System.out.print("Enter a URL to scrape: ");
-        Scanner scanner = new Scanner(System.in);
-        String url = scanner.nextLine();
-
-        doIndexing(url);
+        SpringApplication.run(Main.class, args);
+//        System.out.print("Enter a URL to scrape: ");
+//        Scanner scanner = new Scanner(System.in);
+//        String url = scanner.nextLine();
+//
+//        doIndexing(url);
     }
 
     /**
