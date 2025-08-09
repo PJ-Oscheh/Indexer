@@ -2,11 +2,17 @@ package com.pjoschmann.indexer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.json.JsonParser;
+import org.springframework.boot.json.JsonParserFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 @RestController
@@ -16,6 +22,30 @@ public class Main {
     @RequestMapping("/")
     String home() {
         return "Hello World!";
+    }
+
+    @GetMapping("/indexSite")
+    ResponseEntity<Map<String,SiteInfo>> indexSite(@RequestBody final String rawJson) {
+
+        JsonParser jsonParser = JsonParserFactory.getJsonParser();
+        Map<String,Object> parsedJson = jsonParser.parseMap(rawJson);
+
+        final String url = parsedJson.get("url").toString();
+
+        WebCrawler wc = new WebCrawler();
+
+        // Crawl site and find links
+        HashMap<String, SiteInfo> siteMap = new HashMap<>();
+
+        try {
+            siteMap = wc.crawl(url, url);
+        }
+        catch (IOException e) {
+            System.out.println("Failed to traverse site: " + e.getLocalizedMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(siteMap);
     }
 
     public static void main(String[] args) {
